@@ -25,12 +25,13 @@ class ViewController: UIViewController {
     let scores = Array(1...6)
     
     var totalScore = 2
+    let winScore = 22
     var isPlaying = false
     var isSetting = false
+    var isEndGame = false
     
-    func diceRandomize() {
-        diceImageViewOne.image = UIImage(named: dices.randomElement()!)
-        diceImageViewTwo.image = UIImage(named: dices.randomElement()!)
+    func changeTotalScoreLabel(totalScore: Int, winScore: Int? = nil) -> String {
+        return "Score: \(totalScore)/\(winScore ?? self.winScore)"
     }
     
     func startGame() {
@@ -44,20 +45,42 @@ class ViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.totalScoreLabel.alpha = 1
+            self.totalScoreLabel.text = self.changeTotalScoreLabel(totalScore: self.totalScore)
             self.diceImageViewOne.image = UIImage(named: "DiceOne")
-            self.diceImageViewTwo.image = UIImage(named: "DiceTwo")
+            self.diceImageViewTwo.image = UIImage(named: "DiceOne")
             self.isSetting = false
+        }
+    }
+    
+    func endGame() {
+        isEndGame = true;
+        totalScoreLabel.text = "You win 🎉"
+    }
+    
+    func rollDice() {
+        let leftIndex = Int.random(in: 0..<6)
+        let rightIndex = Int.random(in: 0..<6)
+        
+        diceImageViewOne.image = UIImage(named: dices[leftIndex])
+        diceImageViewTwo.image = UIImage(named: dices[rightIndex])
+        totalScore += scores[leftIndex] + scores[rightIndex]
+        totalScoreLabel.text = changeTotalScoreLabel(totalScore: totalScore)
+        
+        if totalScore >= winScore {
+            endGame()
         }
     }
 
     @IBAction func rollButtonPressed(_ sender: UIButton) {
-        if isSetting {
+        if isSetting || isEndGame {
             return
         }
         
         if !isPlaying {
-            startGame()
+            return startGame()
         }
+        
+        rollDice()
     }
 }
 
