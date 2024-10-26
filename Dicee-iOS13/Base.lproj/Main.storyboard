@@ -49,7 +49,14 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Score: 22/22" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t5d-3a-UoX">
-                                <rect key="frame" x="152" y="337" width="111" height="21"/>
+                                <rect key="frame" x="62" y="338" width="111" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Roll times: 10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xes-xO-CHJ">
+                                <rect key="frame" x="178" y="338" width="111" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -63,6 +70,7 @@
                         <outlet property="diceImageViewOne" destination="xyK-6q-De9" id="UsF-K2-S4S"/>
                         <outlet property="diceImageViewTwo" destination="MQc-u6-6xV" id="QCE-3u-edv"/>
                         <outlet property="mainButton" destination="e14-Tg-BcB" id="sOK-JU-jve"/>
+                        <outlet property="rollTimesLabel" destination="Xes-xO-CHJ" id="tEQ-32-H7B"/>
                         <outlet property="totalScoreLabel" destination="t5d-3a-UoX" id="aEg-iC-QBR"/>
                     </connections>
                 </viewController>

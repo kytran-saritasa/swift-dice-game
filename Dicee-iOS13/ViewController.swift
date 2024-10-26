@@ -12,11 +12,11 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        totalScoreLabel.alpha = 0
-        mainButton.setTitle("Start", for: .normal)
+        initGame()
     }
     
     @IBOutlet weak var totalScoreLabel: UILabel!
+    @IBOutlet weak var rollTimesLabel: UILabel!
     @IBOutlet weak var diceImageViewOne: UIImageView!
     @IBOutlet weak var diceImageViewTwo: UIImageView!
     @IBOutlet weak var mainButton: UIButton!
@@ -25,6 +25,7 @@ class ViewController: UIViewController {
     let scores = Array(1...6)
     
     var totalScore = 2
+    var rollTimes = 0
     let winScore = 22
     var isPlaying = false
     var isSetting = false
@@ -32,6 +33,22 @@ class ViewController: UIViewController {
     
     func changeTotalScoreLabel(totalScore: Int, winScore: Int? = nil) -> String {
         return "Score: \(totalScore)/\(winScore ?? self.winScore)"
+    }
+    
+    func changeRollTimesLabel(rollTimes: Int) -> String {
+        return "Roll times: \(rollTimes)"
+    }
+    
+    func initGame() {
+        totalScoreLabel.alpha = 0
+        rollTimesLabel.alpha = 0
+        diceImageViewOne.alpha = 0
+        diceImageViewTwo.alpha = 0
+        totalScoreLabel.text = changeTotalScoreLabel(totalScore: totalScore)
+        rollTimesLabel.text = changeRollTimesLabel(rollTimes: rollTimes)
+        diceImageViewOne.image = UIImage(named: "DiceOne")
+        diceImageViewTwo.image = UIImage(named: "DiceOne")
+        mainButton.setTitle("Start", for: .normal)
     }
     
     func startGame() {
@@ -45,9 +62,9 @@ class ViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.totalScoreLabel.alpha = 1
-            self.totalScoreLabel.text = self.changeTotalScoreLabel(totalScore: self.totalScore)
-            self.diceImageViewOne.image = UIImage(named: "DiceOne")
-            self.diceImageViewTwo.image = UIImage(named: "DiceOne")
+            self.rollTimesLabel.alpha = 1
+            self.diceImageViewOne.alpha = 1
+            self.diceImageViewTwo.alpha = 1
             self.isSetting = false
         }
     }
@@ -55,6 +72,17 @@ class ViewController: UIViewController {
     func endGame() {
         isEndGame = true;
         totalScoreLabel.text = "You win 🎉"
+        mainButton.setTitle("Restart", for: .normal)
+    }
+    
+    func restartGame() {
+        isEndGame = false
+        totalScore = 2
+        rollTimes = 0
+        totalScoreLabel.text = changeTotalScoreLabel(totalScore: totalScore)
+        rollTimesLabel.text = changeRollTimesLabel(rollTimes: rollTimes)
+        diceImageViewOne.image = UIImage(named: "DiceOne")
+        diceImageViewTwo.image = UIImage(named: "DiceOne")
     }
     
     func rollDice() {
@@ -65,6 +93,8 @@ class ViewController: UIViewController {
         diceImageViewTwo.image = UIImage(named: dices[rightIndex])
         totalScore += scores[leftIndex] + scores[rightIndex]
         totalScoreLabel.text = changeTotalScoreLabel(totalScore: totalScore)
+        rollTimes += 1
+        rollTimesLabel.text = changeRollTimesLabel(rollTimes: rollTimes)
         
         if totalScore >= winScore {
             endGame()
@@ -72,14 +102,15 @@ class ViewController: UIViewController {
     }
 
     @IBAction func rollButtonPressed(_ sender: UIButton) {
-        if isSetting || isEndGame {
+        if isSetting {
             return
         }
-        
+        if isEndGame {
+            return restartGame()
+        }
         if !isPlaying {
             return startGame()
         }
-        
         rollDice()
     }
 }
